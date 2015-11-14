@@ -1,0 +1,39 @@
+<!-- main template -->
+<template name="layout">
+  {{> head }}
+  {{> mainBody }}
+</template>
+
+<!-- meta tags and CSS-->
+<template name="head">
+  <head>
+
+    <title>RelationBoat</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="css/skeleton.css" type="text/css" />
+    <link rel="stylesheet" href="css/base.css" type="text/css" />
+
+  </head>
+</template>
+
+
+<!-- HTML body -->
+<template name="mainBody">
+  <body>
+    <div class="container">
+      {{ > header }}
+
+      <hr>
+
+      {{> home_NL }}
+    </div>
+  </body>
+</template>
+
+
+

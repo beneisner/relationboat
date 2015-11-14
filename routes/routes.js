@@ -2,6 +2,6 @@
 Router.route('/', {
   name: 'home',
   action: function () {
-    this.render('home');
+    this.render('layout');
   }
 });
