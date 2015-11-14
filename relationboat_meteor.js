@@ -1,4 +1,7 @@
 if (Meteor.isClient) {
+  
+  
+  Counter Logic
   // counter starts at 0
   Session.setDefault('counter', 0);
 
