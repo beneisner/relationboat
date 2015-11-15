@@ -38,8 +38,13 @@ Template.timeline.events({
 Template.timeline.onRendered(function () {
   var data = Template.currentData()
   var chosenFriend = data.chosenFriend
+  $('#chosen').text(chosenFriend);
   Meteor.call('getMessages', chosenFriend, function(err, data) {
-    $('#result').text("Positivity" + data);
+    var value = (data * 100).toPrecision(4)
+    if (value == -100.0) {
+      value = "N/A"
+    }
+    $('#positivity').text("Message Positivity: " + value + "%");
   });
 });
 
