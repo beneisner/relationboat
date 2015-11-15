@@ -50,10 +50,13 @@ Meteor.methods({
                 if (content != null) {
                     listOfPics = [];
                     var countPhotosFound = 0;
+                    var countOutstandingRequests = Math.ceil(content.photos.data.length / 50);
                     var finished = false;
                     var photoIDs = '';
                     var id2url = {};
                     var counter = 0;
+                    var numImagesProcessed = 0;
+                    var numImages = content.photos.data.length;
                     console.log('Number of photos: ' + content.photos.data.length);
                     for (let pic of content.photos.data) {
                         if (pic.images.length > 0) {
@@ -62,11 +65,13 @@ Meteor.methods({
                             id2url[photoID] = url;
                             photoIDs += photoID + ',';
                             counter++;
-                            if (counter >= 50) {
+                            numImagesProcessed++;
+                            if (counter >= 50 || numImagesProcessed == numImages) {
 
                                 var tagURL = 'https://graph.facebook.com/tags?ids=' + photoIDs.slice(0, -1) + '&access_token=' + accessToken;
                                 HTTP.get(tagURL, asyncCallback=
                                     function(error, response) {
+                                        countOutstandingRequests--;
                                         if (error != null) {
                                             console.log("Frank ERROR2:" + error);
                                         } else {
@@ -98,14 +103,20 @@ Meteor.methods({
                                                         console.log("id2url: " + id2url[photoID]);
                                                     }
                                                 }
-                                                for (let pic of listOfPics) {
-                                                    console.log("List of pics: " + pic.url);
+
+                                                console.log("List of pics: " + listOfPics);
+                                                console.log('Count of outstanding requests: ' + countOutstandingRequests);
+                                                if (countOutstandingRequests == 0) {
+                                                    //getEmotions(listOfPics);
+                                                    for (let pic of listOfPics) {
+                                                        console.log("List of pics: " + pic.url);
+                                                    }
+
+                                                    var emotions = getEmotions(listOfPics);
+
+                                                    setTimeout(function(){ console.log("Emotions: " + emotions); }, 3000);
                                                 }
-                                                var emotions = getEmotions(listOfPics);
-
-                                                
-                                                setTimeout(function(){ console.log("Emotions: " + emotions); }, 3000);
-
+                                                //getEmotions(listOfPics);
                                             }
                                         }
                                 });
