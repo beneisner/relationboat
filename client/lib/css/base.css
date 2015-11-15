@@ -49,3 +49,14 @@ img {
 .hidden {
   display: none;
 }
+
+.results {
+  text-align: center;
+  clear: both;
+}
+
+.footer {
+  text-align: center;
+  margin: 35px auto 15px auto;
+  width: 100%;
+}

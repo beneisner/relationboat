@@ -5,6 +5,13 @@
     <img src="/img/noahsark.png" alt="the Ultimate Relationboat" class="title-img"> 
   </div>
 </template>
+
+<template name="footer">
+  <div class="footer">
+    Created @ HackPrinceton Fall 2015 by Ben Eisner, Frank Jiang, James Almeida, and Tony Jin. <br>
+    Powered by Microsoft Project Oxford + Indico.
+  </div>
+</template>
  
 
 <template name="friendlist">
@@ -23,15 +30,18 @@
 
 
 <template name="timeline">
-   <h4>revel in your marvelous friendship</h4>
-   <br>
-   <button id="data">Get Data</button>
-   <br>
-   <br>
-   <div id="result"></div>
-   <br>
-   <br>
-    
+   
+   <div class="results">
+     <h4>revel in your marvelous friendship with</h4> <br>
+     <h4 id='chosen'></h4> <br>
+     <h5 id="positivity"></h5> <br>
+     <h5 id="happiness"></h5> <br>
+     <br>
+     <button id="data">Get Data</button>
+     <br>
+     <div id="result"></div>
+     <br>   
+   </div>
 </template>
 
 <template name="login">
