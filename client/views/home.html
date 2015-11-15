@@ -35,15 +35,18 @@
      <h4>revel in your marvelous friendship with</h4> <br>
      <h4 id='chosen'></h4> <br>
      <h5 id="positivity"></h5> <br>
-     <h5 id="happiness"></h5> <br>
+     <h5 id="userHappiness"></h5> <br>
+     <h5 id="friendHappiness"></h5> <br>
      <br>
 <!--     <button id="data">Get Data</button>-->
      {{#each emotions}}
         <div class="row">
-          <div class="six columns"><img src={{image}} alt="" class="tagged-image"></div>
           <div class="six columns">
-            {{user}} <br>
-            {{friend}}
+            <img src={{image}} alt="" class="tagged-image">
+          </div>
+          <div class="six columns">
+            <div class="user">You: {{user.scores.happiness}}</div> <br>
+            <div class="friend">Friend: {{friend.scores.happiness}}</div> <br>
           </div>
         </div>
      {{/each}}

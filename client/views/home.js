@@ -52,9 +52,26 @@ Template.timeline.onRendered(function () {
     setTimeout(function() {
         Meteor.call('getPhotoEvals', chosenFriend, true, function(err2, data2) {
             console.log(data2);
+//            var userSum = 0
+//            var friendSum = 0
+//            for (i = 0; i < data2.length; i++) {
+//              var emoset = data2[i];
+//              if (emoset.user == null || emoset.friend == null) {
+//                data2.splice(i, 1);
+//                continue;
+//              }
+//              userSum += emoset.user.scores.happiness
+//              friendSum += emoset.friend.scores.happiness
+//            }
+//          
+//            userSum = (userSum / data2.length * 100).toPrecision(4)
+//            friendSum = (friendSum / data2.length).toPrecision(4)
+//            
+//            $('#userHappiness').text("Your Picture Happiness: " + value + "%");
+//            $('#friendHappiness').text(chosenFriend + " Picture Happiness: " + value + "%");
             Session.set("emotions", data2);
         });
-    }, 7500);
+    }, 9000);
   });
   
   Meteor.call('getMessages', chosenFriend, function(err, data) {
