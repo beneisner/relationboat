@@ -24,18 +24,17 @@ getSentimentFromText = function(text) {
 	datas = {
 		'data': JSON.stringify(text)
 	}
-
-	callback = function(error, response) {
-		if (error) {
-			console.log("ERROR:" + error);
-		}
-
-		else {
-			console.log("CONTENT:" + response['content']);
-		}
-	}
-
-	HTTP.post(indico_url, {data: datas}, aysncCallBack=callback);
+  
+  try {
+    var val = HTTP.post(indico_url, {data: datas});
+    var content = val.content
+    var num = JSON.parse(content).results
+    return num;
+  } catch (e) {
+    console.log("ERROR:" + error);
+    return -1;
+  }
+	
 }
 
 function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2) {
