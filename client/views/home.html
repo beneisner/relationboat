@@ -37,10 +37,16 @@
      <h5 id="positivity"></h5> <br>
      <h5 id="happiness"></h5> <br>
      <br>
-     <button id="data">Get Data</button>
-     <br>
-     <div id="result"></div>
-     <br>   
+<!--     <button id="data">Get Data</button>-->
+     {{#each emotions}}
+        <div class="row">
+          <div class="six columns"><img src={{image}} alt="" class="tagged-image"></div>
+          <div class="six columns">
+            {{user}} <br>
+            {{friend}}
+          </div>
+        </div>
+     {{/each}}
    </div>
 </template>
 

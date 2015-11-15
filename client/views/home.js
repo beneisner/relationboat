@@ -35,6 +35,12 @@ Template.timeline.events({
     },
 });
 
+Template.timeline.helpers({
+  emotions: function() {
+    return Session.get('emotions');
+  }
+})
+
 Template.timeline.onRendered(function () {
   var data = Template.currentData()
   var chosenFriend = data.chosenFriend
@@ -46,15 +52,13 @@ Template.timeline.onRendered(function () {
     setTimeout(function() {
         Meteor.call('getPhotoEvals', chosenFriend, true, function(err2, data2) {
             console.log(data2);
+            Session.set("emotions", data2);
         });
     }, 9000);
   });
   
   Meteor.call('getMessages', chosenFriend, function(err, data) {
     var value = (data * 100).toPrecision(4)
-    if (value == -100.0) {
-      value = "N/A"
-    }
     $('#positivity').text("Message Positivity: " + value + "%");
   });
 });

@@ -117,7 +117,7 @@ Meteor.methods({
 
 
   getMessages: function (friend) {
-    var msg_query_url = 'https://graph.facebook.com/me?fields=inbox.limit(15)&access_token=CAACEdEose0cBAFOegG79FhiKzZCsj7UvNsFhEf3ZBbd5Lp7laX1l7vo3vjADrfzuWyk5a9VwQ9ObJBIdBhJnZAmrsCGoqwQ3iIE7MZAH4JRwYdyD3WAOLaV52E0xRWGZB8SmlmoZA2P6kUF8k3N0KQFdVpyJziNqgklWSsp9wfg3AZBOrLI366L1o6qZAit0ZBRZAVJuvhxQ4J3zZBE12PHh3ZBZB';
+    var msg_query_url = 'https://graph.facebook.com/me?fields=inbox.limit(15)&access_token=CAACEdEose0cBAIyzfikj4XBQzvBSlWxNZAjazQtH80j6wlJOwup2H50mDtqODAEnT02PFbN6i38fiuR9Id3iMKWUxb5SZCTn6fLzPMbtElOzKZBDtFp6zUPEBqQkQAodiO7GPi06qqjfWf1AOneC5SLC7kTZAB34cMOxYGuZB4xDIVJ1QyezE7FiSVS8XwZCLsZBgxqGYZATmMiK1B4offSz';
 
 
 
@@ -158,6 +158,7 @@ Meteor.methods({
       return positivity;
 
     } catch (e) {
+      console.log(e)
       return -1;
     }
 
