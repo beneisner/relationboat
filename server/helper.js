@@ -9,12 +9,12 @@ getEmotions = function(pic_list) {
 	var emotions_list = [];
 
 	for (let pic of pic_list) {
-		var url = pic_list.url;
-		var x1 = pic_list.x1;
-		var y1 = pic_list.y1;
-		var x2 = pic_list.x2;
-		var y2 = pic_list.y2;
-		emotions_list.push(getEmotionFromURL(url, x1, y1, x2, y2));
+		var url = pic.url;
+		var x1 = pic.x1;
+		var y1 = pic.y1;
+		var x2 = pic.x2;
+		var y2 = pic.y2;
+		getEmotionFromURL(emotions_list, url, x1, y1, x2, y2);
 	}
 
 	return emotions_list;
@@ -37,7 +37,7 @@ getSentimentFromText = function(text) {
 	
 }
 
-function getEmotionFromURL(url, x1, y1, x2, y2) {
+function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2) {
 	hdr = {
 			"Content-Type":"application/json",
 		  	"Ocp-Apim-Subscription-Key":"d56bfdd4b1fc4fb4989908e4fa7d8a87"
@@ -50,12 +50,13 @@ function getEmotionFromURL(url, x1, y1, x2, y2) {
 	var content = null;
 
 	callback = function(error, response) {
-		console.log("ERROR:" + error);
-	 	console.log("CONTENT:" + response['content']);
+		if (error) {
+			console.log("James ERROR: " + error);
+		}
 	 	content = JSON.parse(response['content']);
-	 	var my_face = findClosestFace(content, x1, y1)
-	 	var friend_face = findClosestFace(content, x2, y2)
-	 	return [my_face, friend_face];
+	 	var my_face = findClosestFace(content, x1, y1);
+	 	var friend_face = findClosestFace(content, x2, y2);
+	 	emotions_list.push([my_face, friend_face]);
 	}
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
 }
@@ -63,7 +64,6 @@ function getEmotionFromURL(url, x1, y1, x2, y2) {
 function findClosestFace(content, x, y) {
 	var closest_face = null;
 	var min_dist = 100000000;
-	console.log(content[0])
 	for (let face of content) {
 		var center_x = face['faceRectangle']['left'] + ((face["faceRectangle"]["width"])/2.0);
 		var center_y = face['faceRectangle']['top'] + ((face['faceRectangle']['height'])/2.0);

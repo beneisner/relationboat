@@ -8,23 +8,26 @@ Meteor.methods({
     getPhotoEvals: function (friend) {
         var accessToken = Meteor.user().services.facebook.accessToken;
         var myName = Meteor.user().profile.name;
-        console.log(myName);
-        console.log(accessToken);
+        console.log("myName: " + myName);
+        console.log("accessToken: " + accessToken);
 
 
 	    callback = function(error, response) {
             if (error != null) {
-                console.log("ERROR:" + error)
+                console.log("Frank ERROR1:" + error)
             } else {
                 var contentString = response['content'];
                 var content = JSON.parse(contentString);
                 if (content != null) {
                     listOfPics = [];
                     var countPhotosFound = 0;
+                    var countOutstandingRequests = Math.ceil(content.photos.data.length / 50);
                     var finished = false;
                     var photoIDs = '';
                     var id2url = {};
                     var counter = 0;
+                    var numImagesProcessed = 0;
+                    var numImages = content.photos.data.length;
                     console.log('Number of photos: ' + content.photos.data.length);
                     for (let pic of content.photos.data) {
                         if (pic.images.length > 0) {
@@ -33,13 +36,15 @@ Meteor.methods({
                             id2url[photoID] = url;
                             photoIDs += photoID + ',';
                             counter++;
-                            if (counter >= 50) {
+                            numImagesProcessed++;
+                            if (counter >= 50 || numImagesProcessed == numImages) {
 
                                 var tagURL = 'https://graph.facebook.com/tags?ids=' + photoIDs.slice(0, -1) + '&access_token=' + accessToken;
                                 HTTP.get(tagURL, asyncCallback=
                                     function(error, response) {
+                                        countOutstandingRequests--;
                                         if (error != null) {
-                                            console.log("ERROR:" + error);
+                                            console.log("Frank ERROR2:" + error);
                                         } else {
                                             var contentString = response['content'];
                                             var content = JSON.parse(contentString);
@@ -55,22 +60,34 @@ Meteor.methods({
                                                             myX = person.x;
                                                             myY = person.y;
                                                         } else if (person.name === friend) {
-                                                            console.log(person.name);
+                                                            console.log("person.name: " + person.name);
                                                             friendX = person.x;
                                                             friendY = person.y;
                                                         }
                                                     }
                                                     if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
                                                         listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
-                                                        console.log(friendX);
-                                                        console.log(friendY);
+                                                        console.log("FriendX: " + friendX);
+                                                        console.log("FriendY: " + friendY);
                                                         countPhotosFound++;
                                                         console.log('Photos found: ' + countPhotosFound);
-                                                        console.log(id2url[photoID]);
+                                                        console.log("id2url: " + id2url[photoID]);
                                                     }
                                                 }
+
                                                 console.log("List of pics: " + listOfPics);
-                                                getEmotions(listOfPics);
+                                                console.log('Count of outstanding requests: ' + countOutstandingRequests);
+                                                if (countOutstandingRequests == 0) {
+                                                    //getEmotions(listOfPics);
+                                                    for (let pic of listOfPics) {
+                                                        console.log("List of pics: " + pic.url);
+                                                    }
+
+                                                    var emotions = getEmotions(listOfPics);
+
+                                                    setTimeout(function(){ console.log("Emotions: " + emotions); }, 3000);
+                                                }
+                                                //getEmotions(listOfPics);
                                             }
                                         }
                                 });
