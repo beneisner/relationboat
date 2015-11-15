@@ -22,3 +22,7 @@ accounts-password
 accounts-facebook
 service-configuration
 iron:router
+meteorhacks:npm
+
+
+npm-container
