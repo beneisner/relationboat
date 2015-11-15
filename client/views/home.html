@@ -1,8 +1,10 @@
 <template name="header">
-  <header>
-    <img src="" alt="">
-    RelationBoat. Brave the Choppy Waters.
-  </header>
+  <div class="header">
+    <h1>Relationboat</h1>
+    <h5>Brave the Choppy Waters</h5>
+    <img src="/img/noahsark.png" alt="the Ultimate Relationboat" class="title-img">
+  
+  </div>
 </template>
  
 
@@ -13,23 +15,43 @@
 </template>
 
 
-<template name="home_L">
-  Congrats. You have signed in.
+<template name="friendlist">
+  <h4>here is a list of friends</h4>
+  <br>
+  
+  <div class="row">
+   {{#each friends}}
+    <div class="friend four columns">    
+      <div class="friend-prof-pic"><img src={{pic}} alt=""></div>
+      <div class="friend-name">{{name}}</div>
+    </div>
+    {{/each}}
+  </div>
 </template>
 
 
 <template name="timeline">
-  Look at such a wonderful friendship
-  <br> <br>
-  
+   revel in your marvelous friendship <br>
+   <br>
+   <button id="data">Get Data</button>
+   <br>
+   <br>
+   <div id="result"></div>
+   <br>
+   <br>
+    
 </template>
 
 <template name="login">
     {{#if currentUser}}
-        {{currentUser.services.facebook.name}} -
-        {{currentUser.services.facebook.gender}} - 
-        {{currentUser.services.facebook.accessToken}}
         <button id="logout">Logout</button>
+        <br>
+        
+        <div class="parentNode">
+            {{ > friendlist }}
+        </div>
+                
+<!--        <button id="logout">Logout</button>-->
     {{else}}
         <button id="facebook-login" class="btn btn-default"> Login with Facebook</button>
     {{/if}}
