@@ -47,7 +47,7 @@ Template.timeline.onRendered(function () {
         Meteor.call('getPhotoEvals', chosenFriend, true, function(err2, data2) {
             console.log(data2);
         });
-    }, 9000);
+    }, 7500);
   });
   
   Meteor.call('getMessages', chosenFriend, function(err, data) {
