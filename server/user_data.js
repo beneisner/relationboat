@@ -99,8 +99,8 @@ Meteor.methods({
                                                         console.log(id2url[photoID]);
                                                     }
                                                 }
-                                                console.log(listOfPics);
-                                                getEmotionFromURL(listOfPics);
+                                                console.log("List of pics: " + listOfPics);
+                                                getEmotions(listOfPics);
                                             }
                                         }
                                 });
