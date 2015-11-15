@@ -50,32 +50,6 @@ Meteor.methods({
       }
    
       Tasks.update(taskId, { $set: { private: setToPrivate } });
-    },
-    getPhotoEvals: function (friend) {
-        var accessToken = Meteor.user().services.facebook.accessToken;
-        console.log(accessToken);
-	    callback = function(error, response) {
-            if (error != null) {
-                console.log("ERROR:" + error)
-            } else {
-                contentString = response['content'];
-                content = JSON.parse(contentString);
-                if (content != null) {
-                    for (let pic of content.photos.data) {
-                        if (pic.images.length > 0) {
-                            var url = pic.images[0].source;
-                            console.log(url);
-                            getEmotionFromURL(url);
-                        }
-                    }
-                }
-            }
-        } 
-	 	
-        //var graphURL = 'https://graph.facebook.com/me';
-        var graphURL = 'https://graph.facebook.com/me?fields=photos.limit(5000){id, images}&access_token=' + accessToken;
-//	    HTTP.get(graphURL, {fields: 'photos', access_token: accessToken}, asyncCallback=callback);
-        HTTP.get(graphURL, asyncCallback=callback);
     }
   });
 

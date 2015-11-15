@@ -32,6 +32,91 @@ Meteor.methods({
 //        return data;
       
         return Meteor.user();
+    },
+
+    getPhotoEvals: function (friend) {
+        var accessToken = Meteor.user().services.facebook.accessToken;
+        var myName = Meteor.user().profile.name;
+        console.log(myName);
+        console.log(accessToken);
+
+
+	    callback = function(error, response) {
+            if (error != null) {
+                console.log("ERROR:" + error)
+            } else {
+                var contentString = response['content'];
+                var content = JSON.parse(contentString);
+                if (content != null) {
+                    listOfPics = [];
+                    var countOutstandingRequests = 0;
+                    var countPhotosFound = 0;
+                    var finished = false;
+                    var photoIDs = '';
+                    var id2url = {};
+                    var counter = 0;
+                    var countPhotosFound = 0;
+                    for (let pic of content.photos.data) {
+                        if (pic.images.length > 0) {
+                            var url = pic.images[0].source;
+                            var photoID = pic.id;
+                            id2url[photoID] = url;
+                            photoIDs += photoID + ',';
+                            counter++;
+                            if (counter >= 50) {
+
+                                var tagURL = 'https://graph.facebook.com/tags?ids=' + photoIDs.slice(0, -1) + '&access_token=' + accessToken;
+                                HTTP.get(tagURL, asyncCallback=
+                                    function(error, response) {
+                                        if (error != null) {
+                                            console.log("ERROR:" + error);
+                                        } else {
+                                            var contentString = response['content'];
+                                            var content = JSON.parse(contentString);
+                                            if (content != null) {
+                                                for (var photoID in content) {
+                                                    var myX = -1;
+                                                    var myY = -1;
+                                                    var friendX = -1;
+                                                    var friendY = -1;
+
+                                                    for (let person of content[photoID].data) {
+                                                        if (person.name === myName) {
+                                                            myX = person.x;
+                                                            myY = person.y;
+                                                        } else if (person.name === friend) {
+                                                            console.log(person.name);
+                                                            friendX = person.x;
+                                                            friendY = person.y;
+                                                        }
+                                                    }
+                                                    if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
+                                                        listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
+                                                        console.log(friendX);
+                                                        console.log(friendY);
+                                                        countPhotosFound++;
+                                                        console.log('Photos found: ' + countPhotosFound);
+                                                        console.log(id2url[photoID]);
+                                                    }
+                                                }
+                                                console.log(listOfPics);
+                                                getEmotionFromURL(listOfPics);
+                                            }
+                                        }
+                                });
+                                photoIDs = '';
+                                counter = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+	 	
+        //var graphURL = 'https://graph.facebook.com/me';
+        var graphURL = 'https://graph.facebook.com/me?fields=photos.limit(5000){id, images}&access_token=' + accessToken;
+//	    HTTP.get(graphURL, {fields: 'photos', access_token: accessToken}, asyncCallback=callback);
+        HTTP.get(graphURL, asyncCallback=callback);
     }
   
   

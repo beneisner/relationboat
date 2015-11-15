@@ -20,6 +20,7 @@ Meteor.subscribe('userData');
 
 Template.timeline.events({
     'click #data': function (e) {
+      Meteor.call('getPhotoEvals', "Devon Hartsough");
       Meteor.call('getUserData', function(err, data) {
         $('#result').text(JSON.stringify(data, undefined, 4));
       });
