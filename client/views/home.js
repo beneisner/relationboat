@@ -39,6 +39,15 @@ Template.timeline.onRendered(function () {
   var data = Template.currentData()
   var chosenFriend = data.chosenFriend
   $('#chosen').text(chosenFriend);
+  
+  var arr = [];
+  
+  Meteor.call('getPhotoEvals', chosenFriend, arr, function(err, data) {
+    setTimeout(function() {
+      console.log(arr);
+    }, 9000);
+  });
+  
   Meteor.call('getMessages', chosenFriend, function(err, data) {
     var value = (data * 100).toPrecision(4)
     if (value == -100.0) {
