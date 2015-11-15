@@ -96,11 +96,8 @@ Meteor.methods({
                                                     }
                                                     if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
                                                         listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
-                                                        console.log("FriendX: " + friendX);
-                                                        console.log("FriendY: " + friendY);
                                                         countPhotosFound++;
                                                         console.log('Photos found: ' + countPhotosFound);
-                                                        console.log("id2url: " + id2url[photoID]);
                                                     }
                                                 }
 
@@ -113,8 +110,12 @@ Meteor.methods({
                                                     }
 
                                                     var emotions = getEmotions(listOfPics);
-
-                                                    setTimeout(function(){ console.log("Emotions: " + emotions); }, 3000);
+                                                    setTimeout(function(){ 
+                                                        for (var i = 0; i < emotions.length; i++) {
+                                                            console.log("Emotions: " + JSON.stringify(emotions[i])); 
+                                                        }
+                                                        
+                                                    }, 3000);
                                                 }
                                                 //getEmotions(listOfPics);
                                             }

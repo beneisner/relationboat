@@ -56,8 +56,13 @@ function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2) {
 		}
 	 	content = JSON.parse(response['content']);
 	 	var my_face = findClosestFace(content, x1, y1);
+	 	console.log("done with first")
 	 	var friend_face = findClosestFace(content, x2, y2);
-	 	emotions_list.push([my_face, friend_face]);
+
+	 	console.log("my face: " + JSON.stringify(my_face));
+	 	console.log("friend face: " + JSON.stringify(friend_face));
+
+	 	emotions_list.push([my_face, friend_face, url]);
 	}
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
 }
@@ -71,6 +76,10 @@ function findClosestFace(content, x, y) {
 
 		var dist = getDistance(x, y, center_x, center_y);
 
+		console.log("dist:" + dist)
+		console.log("x: " + x + ", y: " + y)
+		console.log("cx: " + center_x + ", cy: " + center_y)
+
 		if (dist < min_dist) {
 			min_dist = dist;
 			closest_face = face;
@@ -80,5 +89,5 @@ function findClosestFace(content, x, y) {
 }
 
 function getDistance(x1, y1, x2, y2) {
-	return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)
+	return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
 }

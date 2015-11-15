@@ -20,7 +20,7 @@ Meteor.subscribe('userData');
 
 Template.timeline.events({
     'click #data': function (e) {
-      Meteor.call('getPhotoEvals', "Ben Eisner");
+      Meteor.call('getPhotoEvals', "Tony Jin");
       Meteor.call('getUserData', function(err, data) {
         $('#result').text(JSON.stringify(data, undefined, 4));
       });
