@@ -49,13 +49,12 @@ Meteor.methods({
                 var content = JSON.parse(contentString);
                 if (content != null) {
                     listOfPics = [];
-                    var countOutstandingRequests = 0;
                     var countPhotosFound = 0;
                     var finished = false;
                     var photoIDs = '';
                     var id2url = {};
                     var counter = 0;
-                    var countPhotosFound = 0;
+                    console.log('Number of photos: ' + content.photos.data.length);
                     for (let pic of content.photos.data) {
                         if (pic.images.length > 0) {
                             var url = pic.images[0].source;
@@ -114,7 +113,7 @@ Meteor.methods({
         } 
 	 	
         //var graphURL = 'https://graph.facebook.com/me';
-        var graphURL = 'https://graph.facebook.com/me?fields=photos.limit(5000){id, images}&access_token=' + accessToken;
+        var graphURL = 'https://graph.facebook.com/me?fields=photos.limit(5000).order(reverse_chronological){id, images}&access_token=' + accessToken;
 //	    HTTP.get(graphURL, {fields: 'photos', access_token: accessToken}, asyncCallback=callback);
         HTTP.get(graphURL, asyncCallback=callback);
     }
