@@ -62,7 +62,6 @@ Meteor.methods({
                                                             myX = person.x;
                                                             myY = person.y;
                                                         } else if (person.name === friend) {
-                                                            console.log("person.name: " + person.name);
                                                             friendX = person.x;
                                                             friendY = person.y;
                                                         }
@@ -70,18 +69,10 @@ Meteor.methods({
                                                     if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
                                                         listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY, width: id2size[photoID].width, height: id2size[photoID].height}); 
                                                         countPhotosFound++;
-                                                        console.log('Photos found: ' + countPhotosFound);
                                                     }
                                                 }
 
-                                                console.log("List of pics: " + listOfPics);
-                                                console.log('Count of outstanding requests: ' + countOutstandingRequests);
                                                 if (countOutstandingRequests == 0) {
-                                                    //getEmotions(listOfPics);
-                                                    for (let pic of listOfPics) {
-                                                        console.log("List of pics: " + pic.url);
-                                                    }
-
                                                     var emotions = getEmotions(listOfPics);
 
                                                     setTimeout(function(){ 
