@@ -89,7 +89,7 @@ Meteor.methods({
                                                             friendY = person.y;
                                                         }
                                                     }
-                                                    if (/*myX != -1 && typeof myX !== 'undefined' &&*/ friendX != -1 && typeof friendX !== 'undefined') {
+                                                    if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
                                                         listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
                                                         console.log(friendX);
                                                         console.log(friendY);
