@@ -152,7 +152,7 @@ Meteor.methods({
         return positivity;
       
     } catch (e) {
-      return -1
+      return -1;
     }
     
     
