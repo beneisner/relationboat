@@ -1,6 +1,6 @@
 Template.login.events({
     'click #facebook-login': function(event) {
-        Meteor.loginWithFacebook({requestPermissions: ['user_photos', 'user_friends', 'read_friendlists', 'read_mailbox']}, function(err){
+        Meteor.loginWithFacebook({requestPermissions: ['user_photos', 'user_friends']}, function(err){
             if (err) {
                 throw new Meteor.Error("Facebook login failed");
             }
@@ -18,6 +18,7 @@ Template.login.events({
     }
 });
 
+
 Meteor.subscribe('userData');
 
 
@@ -26,6 +27,7 @@ Meteor.subscribe('userData');
 ************************************************************/
 Template.timeline.events({
     'click #data': function (e) {
+      Meteor.call('getMessages', "Christina Bob Hu");
       Meteor.call('getUserData', function(err, data) {
         $('#result').text(JSON.stringify(data, undefined, 4));
       });
@@ -35,10 +37,11 @@ Template.timeline.events({
 Template.timeline.onRendered(function () {
   var data = Template.currentData()
   var chosenFriend = data.chosenFriend
-  Meteor.call('getUserData', function(err, data) {
-        $('#result').text(JSON.stringify(data, undefined, 4));
+  Meteor.call('getMessages', chosenFriend, function(err, data) {
+    $('#result').text("Positivity" + data);
   });
 });
+
 
 
 /************************************************************ 
@@ -89,7 +92,7 @@ Template.friendlist.helpers({
       pic:"/img/vdu.jpg"
     },
     {
-      name:"Christina Hu",
+      name:"Christina Bob Hu",
       pic:"/img/cbhu.jpg"
     },
   ]

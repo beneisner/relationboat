@@ -5,7 +5,39 @@ var wiki = "https://upload.wikimedia.org/wikipedia/commons/e/eb/Ash_Tree_-_geogr
 var indico_url = 'https://apiv2.indico.io/sentiment?key=c9d6aa07d112b8be0e9aac6ffe4196de'
 
 
-getEmotionFromURL = function(url) {
+getEmotions = function(pic_list) {
+	var emotions_list = [];
+
+	for (let pic of pic_list) {
+		var url = pic_list.url;
+		var x1 = pic_list.x1;
+		var y1 = pic_list.y1;
+		var x2 = pic_list.x2;
+		var y2 = pic_list.y2;
+		emotions_list.push(getEmotionFromURL(url, x1, y1, x2, y2));
+	}
+
+	return emotions_list;
+}
+
+getSentimentFromText = function(text) {
+	datas = {
+		'data': JSON.stringify(text)
+	}
+  
+  try {
+    var val = HTTP.post(indico_url, {data: datas});
+    var content = val.content
+    var num = JSON.parse(content).results
+    return num;
+  } catch (e) {
+    console.log("ERROR:" + error);
+    return -1;
+  }
+	
+}
+
+function getEmotionFromURL(url, x1, y1, x2, y2) {
 	hdr = {
 			"Content-Type":"application/json",
 		  	"Ocp-Apim-Subscription-Key":"d56bfdd4b1fc4fb4989908e4fa7d8a87"
@@ -21,24 +53,11 @@ getEmotionFromURL = function(url) {
 		console.log("ERROR:" + error);
 	 	console.log("CONTENT:" + response['content']);
 	 	content = JSON.parse(response['content']);
-	 	var closest_face = findClosestFace(content, 50, 50)
-	 	console.log(closest_face)
+	 	var my_face = findClosestFace(content, x1, y1)
+	 	var friend_face = findClosestFace(content, x2, y2)
+	 	return [my_face, friend_face];
 	}
-
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
-}
-
-getSentimentFromText = function(text) {
-	datas = {
-		'data': JSON.stringify(text)
-	}
-
-	callback = function(error, response) {
-		console.log("ERROR:" + error);
-		console.log("CONTENT:" + response['content']);
-	}
-
-	HTTP.post(indico_url, {data: datas}, aysncCallBack=callback);
 }
 
 function findClosestFace(content, x, y) {
@@ -46,7 +65,6 @@ function findClosestFace(content, x, y) {
 	var min_dist = 100000000;
 	console.log(content[0])
 	for (let face of content) {
-		console.log("FACE:" + face)
 		var center_x = face['faceRectangle']['left'] + ((face["faceRectangle"]["width"])/2.0);
 		var center_y = face['faceRectangle']['top'] + ((face['faceRectangle']['height'])/2.0);
 
