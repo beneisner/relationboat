@@ -14,7 +14,9 @@ getEmotions = function(pic_list) {
 		var y1 = pic.y1;
 		var x2 = pic.x2;
 		var y2 = pic.y2;
-		getEmotionFromURL(emotions_list, url, x1, y1, x2, y2);
+		var width = pic.width;
+		var height = pic.height;
+		getEmotionFromURL(emotions_list, url, x1, y1, x2, y2, width, height);
 	}
 
 	return emotions_list;
@@ -37,7 +39,7 @@ getSentimentFromText = function(text) {
 	
 }
 
-function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2) {
+function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2, width, height) {
 	hdr = {
 			"Content-Type":"application/json",
 		  	"Ocp-Apim-Subscription-Key":"d56bfdd4b1fc4fb4989908e4fa7d8a87"
@@ -54,21 +56,22 @@ function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2) {
 			console.log("James ERROR: " + error);
 		}
 	 	content = JSON.parse(response['content']);
-	 	var my_face = findClosestFace(content, x1, y1);
-	 	var friend_face = findClosestFace(content, x2, y2);
-	 	emotions_list.push([my_face, friend_face]);
+	 	var my_face = findClosestFace(content, x1, y1, width, height);
+	 	var friend_face = findClosestFace(content, x2, y2, width, height);;
+	 	emotions_list.push([my_face, friend_face, url]);
 	}
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
 }
 
-function findClosestFace(content, x, y) {
+function findClosestFace(content, x, y, width, height) {
 	var closest_face = null;
 	var min_dist = 100000000;
 	for (let face of content) {
 		var center_x = face['faceRectangle']['left'] + ((face["faceRectangle"]["width"])/2.0);
 		var center_y = face['faceRectangle']['top'] + ((face['faceRectangle']['height'])/2.0);
-
-		var dist = getDistance(x, y, center_x, center_y);
+		var x_pixels = x / 100.0 * width;
+		var y_pixels = y / 100.0 * height;
+		var dist = getDistance(x_pixels, y_pixels, center_x, center_y);
 
 		if (dist < min_dist) {
 			min_dist = dist;
@@ -79,5 +82,5 @@ function findClosestFace(content, x, y) {
 }
 
 function getDistance(x1, y1, x2, y2) {
-	return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)
+	return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
 }

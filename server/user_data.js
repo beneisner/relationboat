@@ -25,6 +25,7 @@ Meteor.methods({
                     var finished = false;
                     var photoIDs = '';
                     var id2url = {};
+                    var id2size = {};
                     var counter = 0;
                     var numImagesProcessed = 0;
                     var numImages = content.photos.data.length;
@@ -34,6 +35,7 @@ Meteor.methods({
                             var url = pic.images[0].source;
                             var photoID = pic.id;
                             id2url[photoID] = url;
+                            id2size[photoID] = { width: pic.images[0].width, height: pic.images[0].height};
                             photoIDs += photoID + ',';
                             counter++;
                             numImagesProcessed++;
@@ -60,34 +62,26 @@ Meteor.methods({
                                                             myX = person.x;
                                                             myY = person.y;
                                                         } else if (person.name === friend) {
-                                                            console.log("person.name: " + person.name);
                                                             friendX = person.x;
                                                             friendY = person.y;
                                                         }
                                                     }
                                                     if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
-                                                        listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
-                                                        console.log("FriendX: " + friendX);
-                                                        console.log("FriendY: " + friendY);
+                                                        listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY, width: id2size[photoID].width, height: id2size[photoID].height}); 
                                                         countPhotosFound++;
-                                                        console.log('Photos found: ' + countPhotosFound);
-                                                        console.log("id2url: " + id2url[photoID]);
                                                     }
                                                 }
 
-                                                console.log("List of pics: " + listOfPics);
-                                                console.log('Count of outstanding requests: ' + countOutstandingRequests);
                                                 if (countOutstandingRequests == 0) {
-                                                    //getEmotions(listOfPics);
-                                                    for (let pic of listOfPics) {
-                                                        console.log("List of pics: " + pic.url);
-                                                    }
-
                                                     var emotions = getEmotions(listOfPics);
 
-                                                    setTimeout(function(){ console.log("Emotions: " + emotions); }, 3000);
+                                                    setTimeout(function(){ 
+                                                        for (var i = 0; i < emotions.length; i++) {
+                                                            console.log("Emotions: " + JSON.stringify(emotions[i])); 
+                                                        }
+                                                        
+                                                    }, 3000);
                                                 }
-                                                //getEmotions(listOfPics);
                                             }
                                         }
                                 });
