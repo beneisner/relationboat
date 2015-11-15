@@ -25,6 +25,7 @@ Meteor.methods({
                     var finished = false;
                     var photoIDs = '';
                     var id2url = {};
+                    var id2size = {};
                     var counter = 0;
                     var numImagesProcessed = 0;
                     var numImages = content.photos.data.length;
@@ -34,6 +35,7 @@ Meteor.methods({
                             var url = pic.images[0].source;
                             var photoID = pic.id;
                             id2url[photoID] = url;
+                            id2size[photoID] = { width: pic.images[0].width, height: pic.images[0].height};
                             photoIDs += photoID + ',';
                             counter++;
                             numImagesProcessed++;
@@ -66,7 +68,7 @@ Meteor.methods({
                                                         }
                                                     }
                                                     if (myX != -1 && typeof myX !== 'undefined' && friendX != -1 && typeof friendX !== 'undefined') {
-                                                        listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY}); 
+                                                        listOfPics.push({url: id2url[photoID], x1: myX, y1: myY, x2: friendX, y2: friendY, width: id2size[photoID].width, height: id2size[photoID].height}); 
                                                         console.log('MyY: ' + myX);
                                                         console.log('MyY: ' + myY);
                                                         console.log("FriendX: " + friendX);
@@ -87,7 +89,7 @@ Meteor.methods({
 
                                                     var emotions = getEmotions(listOfPics);
 
-}                                                    setTimeout(function(){ for (var emotion in emotions) {
+                                                    setTimeout(function(){ for (var emotion in emotions) {
                                                                 console.log("Emotion: " + emotion); 
                                                         }
                                                     } , 3000);
