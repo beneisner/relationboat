@@ -1,9 +1,13 @@
+var emotions;
 Meteor.methods({
   getUserData: function () {
     return Meteor.user();
   },
 
-  getPhotoEvals: function (friend, outarr) {
+  getPhotoEvals: function (friend, cached) {
+    if (cached) {
+        return emotions;
+    }
     var accessToken = Meteor.user().services.facebook.accessToken;
     var myName = Meteor.user().profile.name;
     console.log("myName: " + myName);
@@ -82,13 +86,12 @@ Meteor.methods({
                         }
 
                         if (countOutstandingRequests == 0) {
-                          var emotions = getEmotions(listOfPics);
+                          emotions = getEmotions(listOfPics);
 
                           setTimeout(function () {
                             for (var i = 0; i < emotions.length; i++) {
                               console.log("Emotions: " + JSON.stringify(emotions[i]));
                             }
-                            outarr.push(emotions)
 
                           }, 3000);
                         }
@@ -108,6 +111,8 @@ Meteor.methods({
     var graphURL = 'https://graph.facebook.com/me?fields=photos.limit(500).order(reverse_chronological){id, images}&access_token=' + accessToken;
     //	    HTTP.get(graphURL, {fields: 'photos', access_token: accessToken}, asyncCallback=callback);
     HTTP.get(graphURL, asyncCallback = callback);
+
+    return emotions;
   },
 
 
@@ -149,7 +154,7 @@ Meteor.methods({
       console.log("Getting Sentiments")
       var positivity = getSentimentFromText(bigstring);
 
-      console.log("Positiviyt " + positivity)
+      console.log("Positivity " + positivity)
       return positivity;
 
     } catch (e) {

@@ -42,9 +42,11 @@ Template.timeline.onRendered(function () {
   
   var arr = [];
   
-  Meteor.call('getPhotoEvals', chosenFriend, arr, function(err, data) {
+  Meteor.call('getPhotoEvals', chosenFriend, false, function(err, data) {
     setTimeout(function() {
-      console.log(arr);
+        Meteor.call('getPhotoEvals', chosenFriend, true, function(err2, data2) {
+            console.log(data2);
+        });
     }, 9000);
   });
   
