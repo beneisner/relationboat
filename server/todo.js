@@ -1,4 +1,5 @@
 Tasks = new Mongo.Collection("tasks");
+var access_token = '';
 
 // Only publish tasks that are public or belong to the current user
 Meteor.publish("tasks", function () {
@@ -49,5 +50,30 @@ Meteor.methods({
       }
    
       Tasks.update(taskId, { $set: { private: setToPrivate } });
+    },
+    printAccessToken: function() {
+        var accessToken = Meteor.user().services.facebook.accessToken;
+        console.log(accessToken);
+	    callback = function(error, response) {
+            console.log("ERROR:" + error)
+            contentString = response['content'];
+            content = JSON.parse(contentString);
+            console.log(content);
+            if (content != null) {
+                for (let pic of content.photos.data) {
+                    if (pic.images.length > 0) {
+                        var url = pic.images[0].source;
+                        console.log(url);
+                        getEmotionFromURL(url);
+                    }
+                }
+            }
+        } 
+	 	
+        //var graphURL = 'https://graph.facebook.com/me';
+        var graphURL = 'https://graph.facebook.com/me?fields=photos{images}&access_token=' + accessToken;
+//	    HTTP.get(graphURL, {fields: 'photos', access_token: accessToken}, asyncCallback=callback);
+        HTTP.get(graphURL, asyncCallback=callback);
     }
   });
+

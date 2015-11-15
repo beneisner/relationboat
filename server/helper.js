@@ -2,6 +2,8 @@ var api_url = 'https://api.projectoxford.ai/emotion/v1.0/recognize'
 var james_key = "d56bfdd4b1fc4fb4989908e4fa7d8a87"
 var test_fb_url = 'https://scontent-iad3-1.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/11902360_10204809163811037_8085263968138789270_n.jpg?oh=d341f098ffbf8e817aee8e606cf52713&oe=56ADE898'
 var wiki = "https://upload.wikimedia.org/wikipedia/commons/e/eb/Ash_Tree_-_geograph.org.uk_-_590710.jpg"
+var indico_url = 'https://apiv2.indico.io/sentiment?key=c9d6aa07d112b8be0e9aac6ffe4196de'
+
 
 getEmotionFromURL = function(url) {
 	hdr = {
@@ -24,6 +26,19 @@ getEmotionFromURL = function(url) {
 	}
 
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
+}
+
+getSentimentFromText = function(text) {
+	datas = {
+		'data': JSON.stringify(text)
+	}
+
+	callback = function(error, response) {
+		console.log("ERROR:" + error);
+		console.log("CONTENT:" + response['content']);
+	}
+
+	HTTP.post(indico_url, {data: datas}, aysncCallBack=callback);
 }
 
 function findClosestFace(content, x, y) {
