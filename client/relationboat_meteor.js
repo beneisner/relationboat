@@ -1,10 +1,13 @@
 
 Template.login.events({
     'click #facebook-login': function(event) {
-        Meteor.loginWithFacebook({}, function(err){
+//        Accounts.ui.config({requestPermissions: { facebook: ['user_photos'] }
+ //       });
+        Meteor.loginWithFacebook({requestPermissions: ['user_posts, user_photos']}, function(err){
             if (err) {
                 throw new Meteor.Error("Facebook login failed");
             }
+            Meteor.call('printAccessToken');
         });
     },
  
@@ -18,5 +21,3 @@ Template.login.events({
 });
 
 Meteor.subscribe('userData');
-
-
