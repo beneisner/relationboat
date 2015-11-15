@@ -1,6 +1,6 @@
 Template.login.events({
     'click #facebook-login': function(event) {
-        Meteor.loginWithFacebook({requestPermissions: ['user_photos']}, function(err){
+        Meteor.loginWithFacebook({requestPermissions: ['user_photos', 'user_friends', 'read_friendlists', 'read_mailbox']}, function(err){
             if (err) {
                 throw new Meteor.Error("Facebook login failed");
             }
@@ -12,12 +12,18 @@ Template.login.events({
             if (err) {
                 throw new Meteor.Error("Logout failed");
             }
+          
+            location.reload();
         })
     }
 });
 
 Meteor.subscribe('userData');
 
+
+/************************************************************ 
+                TIMELINE TEMPLATE 
+************************************************************/
 Template.timeline.events({
     'click #data': function (e) {
       Meteor.call('getUserData', function(err, data) {
@@ -26,22 +32,25 @@ Template.timeline.events({
     },
 });
 
+Template.timeline.onRendered(function () {
+  var data = Template.currentData()
+  var chosenFriend = data.chosenFriend
+  Meteor.call('getUserData', function(err, data) {
+        $('#result').text(JSON.stringify(data, undefined, 4));
+  });
+});
+
+
+/************************************************************ 
+                FRIENDLIST TEMPLATE 
+************************************************************/
 Template.friendlist.events({
   'click .friend': function(event) {
-    console.log("clicked here")
-    
-    Blaze.renderWithData(Template.timeline, {user: "someName"}, $('.container').get(0))
+    console.log(this.name)
+    Blaze.renderWithData(Template.timeline, {chosenFriend: this.name}, $('.container').get(0))
     $('.parentNode').addClass('hidden')
-//    var friendView = Blaze.getView($('.friend').get(0))
-//    console.log(friendView)
-//    Blaze.remove(friendView);
   }
 });
-
-Template.login.helpers({
-  chosenFriend: null
-});
-
 
 Template.friendlist.helpers({
   
@@ -52,12 +61,36 @@ Template.friendlist.helpers({
       pic:"/img/beisner.jpg"
     },
     {
+      name:"Maddie Clayton",
+      pic:"/img/mec2.jpg"
+    },
+    {
+      name:"Marsha Zhang",
+      pic:"/img/mrzhang.jpg"
+    },
+    {
       name:"Frank Jiang",
-      pic:"/img/beisner.jpg"
+      pic:"/img/ffjiang.jpg"
+    },
+    {
+      name:"Joe Yates",
+      pic:"/img/jhyates.jpg"
+    },
+    {
+      name:"Hope Lorah",
+      pic:"/img/hlorah.jpg"
     },
     {
       name:"James Almeida",
-      pic:"/img/beisner.jpg"
+      pic:"/img/jamespa.jpg"
+    },
+    {
+      name:"Victor Du",
+      pic:"/img/vdu.jpg"
+    },
+    {
+      name:"Christina Hu",
+      pic:"/img/cbhu.jpg"
     },
   ]
 });

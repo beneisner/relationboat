@@ -2,18 +2,10 @@
   <div class="header">
     <h1>Relationboat</h1>
     <h5>Brave the Choppy Waters</h5>
-    <img src="/img/noahsark.png" alt="the Ultimate Relationboat" class="title-img">
-  
+    <img src="/img/noahsark.png" alt="the Ultimate Relationboat" class="title-img"> 
   </div>
 </template>
  
-
-<template name="home_NL">
-  Hello there. What
-  <br> <br>
-  <a class="button button-primary" href="#">Sign in with FB</a>
-</template>
-
 
 <template name="friendlist">
   <h4>here is a list of friends</h4>
@@ -21,7 +13,7 @@
   
   <div class="row">
    {{#each friends}}
-    <div class="friend four columns">    
+    <div class="friend thirds">    
       <div class="friend-prof-pic"><img src={{pic}} alt=""></div>
       <div class="friend-name">{{name}}</div>
     </div>
@@ -31,7 +23,7 @@
 
 
 <template name="timeline">
-   revel in your marvelous friendship <br>
+   <h4>revel in your marvelous friendship</h4>
    <br>
    <button id="data">Get Data</button>
    <br>
@@ -46,13 +38,10 @@
     {{#if currentUser}}
         <button id="logout">Logout</button>
         <br>
-        
         <div class="parentNode">
             {{ > friendlist }}
-        </div>
-                
-<!--        <button id="logout">Logout</button>-->
+        </div>                
     {{else}}
-        <button id="facebook-login" class="btn btn-default"> Login with Facebook</button>
+        <button id="facebook-login" class="btn btn-default">Login with Facebook</button>
     {{/if}}
 </template>
