@@ -58,7 +58,7 @@ function getEmotionFromURL(emotions_list, url, x1, y1, x2, y2, width, height) {
 	 	content = JSON.parse(response['content']);
 	 	var my_face = findClosestFace(content, x1, y1, width, height);
 	 	var friend_face = findClosestFace(content, x2, y2, width, height);;
-	 	emotions_list.push([my_face, friend_face, url]);
+	 	emotions_list.push({user: my_face, friend: friend_face, image: url});
 	}
 	HTTP.post(api_url, {headers:hdr, data:img}, asyncCallback=callback);
 }

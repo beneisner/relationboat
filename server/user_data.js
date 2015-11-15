@@ -88,12 +88,12 @@ Meteor.methods({
                         if (countOutstandingRequests == 0) {
                           emotions = getEmotions(listOfPics);
 
-                          setTimeout(function () {
-                            for (var i = 0; i < emotions.length; i++) {
-                              console.log("Emotions: " + JSON.stringify(emotions[i]));
-                            }
+                        //  setTimeout(function () {
+                        //    for (var i = 0; i < emotions.length; i++) {
+                        //      console.log("Emotions: " + JSON.stringify(emotions[i]));
+                        //    }
 
-                          }, 3000);
+                        //  }, 3000);
                         }
                       }
                     }

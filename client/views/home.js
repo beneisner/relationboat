@@ -54,7 +54,7 @@ Template.timeline.onRendered(function () {
             console.log(data2);
             Session.set("emotions", data2);
         });
-    }, 9000);
+    }, 7500);
   });
   
   Meteor.call('getMessages', chosenFriend, function(err, data) {
