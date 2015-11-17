@@ -52,23 +52,25 @@ Template.timeline.onRendered(function () {
     setTimeout(function() {
         Meteor.call('getPhotoEvals', chosenFriend, true, function(err2, data2) {
             console.log(data2);
-//            var userSum = 0
-//            var friendSum = 0
-//            for (i = 0; i < data2.length; i++) {
-//              var emoset = data2[i];
-//              if (emoset.user == null || emoset.friend == null) {
-//                data2.splice(i, 1);
-//                continue;
-//              }
-//              userSum += emoset.user.scores.happiness
-//              friendSum += emoset.friend.scores.happiness
-//            }
-//          
-//            userSum = (userSum / data2.length * 100).toPrecision(4)
-//            friendSum = (friendSum / data2.length).toPrecision(4)
-//            
-//            $('#userHappiness').text("Your Picture Happiness: " + value + "%");
-//            $('#friendHappiness').text(chosenFriend + " Picture Happiness: " + value + "%");
+            var userSum = 0
+            var friendSum = 0
+            console.log("Looping")
+            for (let emoset of data2) {
+              if (emoset.user == null || emoset.friend == null) {
+                continue;
+              }
+              userSum += emoset.user.scores.happiness
+              friendSum += emoset.friend.scores.happiness
+              
+              emoset.user.scores.happiness = (emoset.user.scores.happiness).toPrecision(4)
+              emoset.friend.scores.happiness = (emoset.friend.scores.happiness).toPrecision(4)
+            }
+            
+            userSum = (userSum / data2.length * 100).toPrecision(4)
+            friendSum = (friendSum / data2.length * 100).toPrecision(4)
+            
+            $('#userHappiness').text("Your Picture Happiness: " + userSum + "%");
+            $('#friendHappiness').text(chosenFriend + " Picture Happiness: " + friendSum + "%");
             Session.set("emotions", data2);
         });
     }, 9000);
@@ -90,8 +92,16 @@ Template.friendlist.events({
     console.log(this.name)
     Blaze.renderWithData(Template.timeline, {chosenFriend: this.name}, $('.container').get(0))
     $('.parentNode').addClass('hidden')
+  },
+  
+  'click #searchSubmit': function(event) {
+    console.log("CLICKED")
+    console.log($('#searchInput').val())
+    var searchName = $('#searchInput').val();
+    Blaze.renderWithData(Template.timeline, {chosenFriend: searchName}, $('.container').get(0))
+    $('.parentNode').addClass('hidden')
   }
-});
+}); 
 
 Template.friendlist.helpers({
   

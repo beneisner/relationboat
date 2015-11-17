@@ -1,4 +1,4 @@
-var emotions;
+var emotions = [];
 Meteor.methods({
   getUserData: function () {
     return Meteor.user();
@@ -6,7 +6,9 @@ Meteor.methods({
 
   getPhotoEvals: function (friend, cached) {
     if (cached) {
-        return emotions;
+        var temp = emotions;
+        emotions = [];
+        return temp;
     }
     var accessToken = Meteor.user().services.facebook.accessToken;
     var myName = Meteor.user().profile.name;
@@ -117,7 +119,7 @@ Meteor.methods({
 
 
   getMessages: function (friend) {
-    var msg_query_url = 'https://graph.facebook.com/me?fields=inbox.limit(15)&access_token=CAACEdEose0cBAIyzfikj4XBQzvBSlWxNZAjazQtH80j6wlJOwup2H50mDtqODAEnT02PFbN6i38fiuR9Id3iMKWUxb5SZCTn6fLzPMbtElOzKZBDtFp6zUPEBqQkQAodiO7GPi06qqjfWf1AOneC5SLC7kTZAB34cMOxYGuZB4xDIVJ1QyezE7FiSVS8XwZCLsZBgxqGYZATmMiK1B4offSz';
+    var msg_query_url = 'https://graph.facebook.com/me?fields=inbox.limit(15)&access_token=CAACEdEose0cBAO0uVBTw7dHsGEx1cW7y4x2iGcq5WIfXlbICnSwvPVGQOA2k9cXcX8aXd9RChZBk3ZCAhKFMZCDI38L3UKDui2tlbQlLBiufb6ZCTcw1p3eLILQrZCi8KIZADs33qT5TSnO01LHEgQhcP4ttmQYkBMqcATiv7YZCZCz8q0lN4ZC39mImfUnkWAI4bzVnmfD2HZAcfmfldmvkzt';
 
 
 

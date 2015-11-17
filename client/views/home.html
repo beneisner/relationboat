@@ -15,9 +15,17 @@
  
 
 <template name="friendlist">
+   <h4>search for a friend</h4>
+   <div class="row">
+    <div class="six columns">
+      <input class="u-full-width" placeholder="Johnny Appleseed" id="searchInput" type="name">
+      <input class="button-primary" value="Search" id="searchSubmit" type="submit">
+    </div>
+    <div class="six columns"></div>
+  </div>
+  <br> <br>
   <h4>here is a list of friends</h4>
   <br>
-  
   <div class="row">
    {{#each friends}}
     <div class="friend thirds">    
@@ -45,8 +53,8 @@
             <img src={{image}} alt="" class="tagged-image">
           </div>
           <div class="six columns">
-            <div class="user">You: {{user.scores.happiness}}</div> <br>
-            <div class="friend">Friend: {{friend.scores.happiness}}</div> <br>
+            <div class="user">You: <br>{{user.scores.happiness}}</div> <br>
+            <div class="friend">Friend: <br> {{friend.scores.happiness}}</div> <br>
           </div>
         </div>
      {{/each}}
